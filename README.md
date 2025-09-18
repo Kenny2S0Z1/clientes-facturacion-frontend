@@ -16,10 +16,6 @@ Aplicación web desarrollada en **Angular**, desplegada en **Firebase Hosting**,
 - OAuth2 + JWT Authentication
 - Firebase Hosting
 
-## 🌐 Demo en producción
-- Frontend: [https://clientes-app-997af.web.app](https://clientes-app-997af.web.app)
-- Backend: [https://spring-boot2-heroku-rest-4239d6492500.herokuapp.com](https://spring-boot2-heroku-rest-4239d6492500.herokuapp.com)
-
 ## 📌 Funcionalidades
 - 🔐 Login de usuario con OAuth2
 - 👥 CRUD de clientes (crear, editar, eliminar, listar)
@@ -28,9 +24,8 @@ Aplicación web desarrollada en **Angular**, desplegada en **Firebase Hosting**,
 ## ⚙️ Configuración
 El frontend está enlazado al backend mediante un archivo de configuración:
 
-```ts
-export const URL_BACKEND = 'https://spring-boot2-heroku-rest-4239d6492500.herokuapp.com';
-export const REDIRECT_URL = 'https://clientes-app-997af.web.app/login/oauth2/code/angularapp';
+ clientes-app\src\app\config\config.ts
+
 =======
 
 --CREDENCIALES
