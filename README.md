@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 
----
-
-## 🔹 Ejemplo actualizado del README (Frontend)
+## 🔹 README (Frontend)
 Aquí te muestro cómo quedaría esa parte integrada:  
 
 ```markdown
