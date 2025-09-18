@@ -1,0 +1,125 @@
+<div class="card bg-light shadow-sm">
+  <div class="card-header bg-primary text-white">
+    {{ titulo }} : {{ factura.descripcion }}
+  </div>
+
+  <div class="card-body">
+    <h4 class="card-title mb-3">
+      <a [routerLink]="['/clientes']" class="btn btn-outline-primary btn-sm">Volver</a>
+    </h4>
+
+    <form #facturaForm="ngForm" (ngSubmit)="crearFactura()">
+
+      <!-- Cliente -->
+      @if(factura.cliente){
+      <div class="form-group row mb-3">
+        <label for="cliente" class="col-sm-2 col-form-label">Cliente</label>
+        <div class="col-sm-10">
+          <input type="text" id="cliente" name="cliente" class="form-control"
+                 value="{{factura.cliente.nombre}} {{factura.cliente.apellido}}" disabled>
+        </div>
+      </div>
+      }
+
+      <!-- Descripción -->
+      <div class="form-group row mb-3">
+        <label for="descripcion" class="col-sm-2 col-form-label">Descripción</label>
+        <div class="col-sm-10">
+          <input type="text" id="descripcion" name="descripcion"
+                 class="form-control" [(ngModel)]="factura.descripcion"
+                 required #descripcion="ngModel">
+          <div>
+            {{ descripcion.touched && descripcion.invalid ? 'La descripción es obligatoria' : '' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Observación -->
+      <div class="form-group row mb-3">
+        <label for="observacion" class="col-sm-2 col-form-label">Observación</label>
+        <div class="col-sm-10">
+          <textarea id="observacion" name="observacion" class="form-control" rows="3"
+                    [(ngModel)]="factura.observacion" minlength="5" #observacion="ngModel"></textarea>
+          <div>
+            {{ observacion.touched && observacion.invalid ? 'La observación debe tener al menos 5 caracteres' : '' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Productos -->
+      <div class="form-group row mb-3">
+        <label for="productos" class="col-sm-2 col-form-label">Productos</label>
+        <div class="col-sm-10">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Busque producto</mat-label>
+            <input type="text" matInput [(ngModel)]="productoInput" name="productos"
+                   [matAutocomplete]="auto" (ngModelChange)="filtrarProductos($event)"
+                  >
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="mostrarNombre"
+                              (optionSelected)="seleccionarProducto($event.option.value)">
+              @for(producto of productosFiltrados; track $index){
+              <mat-option [value]="producto">{{ producto.nombre }}</mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+         
+        </div>
+      </div>
+
+      <!-- Items -->
+      @if(factura.items.length==0){
+      <div class="alert alert-info">
+        No hay items para la factura. ¡Crea uno!
+      </div>
+      }@else{
+      <table class="table table-striped table-hover table-sm">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(item of factura.items; track $index){
+          <tr>
+            <td>{{ item.producto.nombre }}</td>
+            <td>{{ item.producto.precio }}</td>
+            <td>
+              <input type="number" [(ngModel)]="item.cantidad" name="{{item.producto.id}}"
+                     min="1" (change)="actualizarCantidad(item.producto.id,$event)"
+                     required #cantidad="ngModel">
+              <div>
+                {{ cantidad.touched && cantidad.invalid ? 'La cantidad debe ser al menos 1' : '' }}
+              </div>
+            </td>
+            <td>{{ item.calcularImporte() }}</td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm"
+                      (click)="eliminarItem(item.producto.id)">
+                Eliminar Item
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      <h5 class="float-right">
+        Gran Total {{ factura.calcularGranTotal() }}
+      </h5>
+      }
+
+      <!-- Botón enviar -->
+      <div class="form-group row">
+        <div class="col-sm-10 offset-sm-2">
+          <button type="submit" class="btn btn-success" [disabled]="facturaForm.invalid">
+            Enviar
+          </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

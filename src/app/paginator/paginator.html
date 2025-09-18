@@ -1,0 +1,51 @@
+@let paginador = $paginador | async;
+
+@if (paginas.length > 0 && paginador) {
+  <ul class="pagination">
+    
+    <!-- Botón Anterior -->
+    <li class="page-item" [ngClass]="paginador.number == 0 ? 'disabled' : ''">
+      @if (paginador.number > 0) {
+        <a class="page-link" [routerLink]="['/clientes/page', paginador.number-1]" >
+        &laquo;
+      </a>
+      }
+     
+        
+      @if (paginador.number == 0) {
+        <span class="page-link">&laquo;</span>
+      }
+      
+    </li>
+    
+      <li [ngClass]="paginador.first ?'disabled page-item' : 'page-item'">
+         <a class="page-link" [routerLink]="['/clientes/page', 0]">Primera</a>
+      </li>
+
+    <!-- Números de página -->
+    @for (pagina of paginas; track $index) {
+      <li class="page-item" [ngClass]="pagina-1 == paginador.number ? 'active' : ''">
+        @if (pagina-1 == paginador.number) {
+          <span class="page-link">{{ pagina }}</span>
+        }
+        @else {
+          <a class="page-link" [routerLink]="['/clientes/page', pagina-1]">{{ pagina }}</a>
+        }
+      </li>
+    }
+      <li [ngClass]="paginador.number!=paginador.totalPages-1?'disabled page-item':'page-item'">
+         <a class="page-link" [routerLink]="['/clientes/page', paginador.totalPages-1]">Ultima</a>
+      </li>
+    <!-- Botón Siguiente -->
+    <li class="page-item" [ngClass]="paginador.last ? 'disabled' : ''">
+      @if (paginador.number < paginador.totalPages-1) {
+
+      }
+        <a class="page-link" [routerLink]="['/clientes/page', paginador.number+1]" >
+        &raquo;
+      </a>
+    
+    </li>
+
+  </ul>
+}

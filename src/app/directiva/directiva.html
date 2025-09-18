@@ -1,0 +1,16 @@
+<button type="button" class="btn btn-primary my-3" (click)="toggleActivate()">
+    {{habilitar?'Ocultar':'Mostrar'}}
+</button>
+<div class="card">
+    <div class="card-header">Listado de Cursos</div>
+
+    @if(habilitar){
+        <ul class="list-group">
+        @for (item of listaCurso; track $index) {
+        <li class="list-group-item">{{item}}</li>
+        }
+     
+    </ul>
+    }
+    
+</div>

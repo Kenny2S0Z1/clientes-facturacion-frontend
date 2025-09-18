@@ -1,0 +1,110 @@
+@if(modalService.modal){
+<div class="abrir-modal animacion fadeIn">
+    <div class="modal" tabindex="-1" style="display: block;">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{titulo}}</h5>
+                    <button (click)="cerrarModal()" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                @if(cliente!=undefined){
+                                <ul class="list-group mb-3">
+                                    <li class="list-group-item">{{cliente.nombre}}</li>
+                                    <li class="list-group-item">{{cliente.apellido}}</li>
+                                    <li class="list-group-item">{{cliente.email}}</li>
+                                    <li class="list-group-item">{{cliente.createAt |date:'fullDate'}}</li>
+                                    <li class="list-group-item">{{cliente.region.nombre}}</li>
+                                </ul>
+                                }
+                                <div class="input-group mb-3">
+                                    <input (change)="seleccionarFoto($event)" type="file" class="form-control"
+                                        id="inputGroupFile04" aria-describedby="inputGroupFileAddon04"
+                                        aria-label="Upload">
+                                    <button (click)="subirFoto()" class="btn btn-outline-secondary" type="button"
+                                        id="inputGroupFileAddon04">Button</button>
+                                </div>
+                                @if(progress>0){
+                                <div style="height:40px" class="progress" role="progressbar" aria-label="Basic example"
+                                    attr.aria-valuenow={{progress}} aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar" [ngStyle]="{width:progress+'%'}"></div>
+                                </div>
+                                }
+                            </div>
+                            @if(cliente.foto){
+                            <div class="col-sm">
+                                <img class="img-thumbnail rounded"
+                                    src="http://localhost:8080/api/uploads/img/{{cliente.foto}}">
+                            </div>
+                            }
+
+                        </div>
+                        <div class="row">
+                            <button type="button" name="button" class="btn btn-success"
+                                [routerLink]="['/facturas/form',cliente.id]">Crear Factura</button>
+
+                        </div>
+
+                        @if (cliente.facturas?.length==0) {
+                        <div class="alert alert-info my-4">
+                            No hay facturas asignadas para el cliente {{cliente.nombre}} {{cliente.apellido}}
+                        </div>
+                        }@else {
+                        <div class="row">
+                            <table class="table table-bordered table-striped my-4">
+                                <thead>
+                                    <tr>
+                                        <th>folio</th>
+                                        <th>descripcion</th>
+                                        <th>fecha</th>
+                                        <th>total</th>
+                                        <th>detalle</th>
+                                        <th>eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (item of cliente.facturas; track $index) {
+                                    <tr>
+                                        <td>{{item.id}}</td>
+                                        <td>{{item.descripcion}}</td>
+                                        <td>{{item.createAt}}</td>
+                                        <td>{{item.total}}</td>
+                                        <td>
+                                            <button [routerLink]="['/facturas',item.id]" class="btn btn-primary btn-sm"
+                                                type="button">
+                                                ver
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-sm" type="button"
+                                                (click)="eliminar(item)">
+                                                eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        }
+
+
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button (click)="cerrarModal()" type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

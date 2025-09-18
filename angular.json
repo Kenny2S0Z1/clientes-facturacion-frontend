@@ -25,16 +25,19 @@
               }
             ],
             "styles": [
+              "src/custom-theme.scss",
+              "src/assets/css/bootstrap.min.css",
               "src/styles.css"
-            ]
+            ],
+            "scripts": ["src/assets/js/bootstrap.bundle.min.js"]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "1MB",
+                  "maximumError": "1.5MB"
                 },
                 {
                   "type": "anyComponentStyle",

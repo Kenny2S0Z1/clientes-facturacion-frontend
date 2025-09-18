@@ -1,0 +1,118 @@
+<div class="card bg-dark text-white mt-1">
+    <div class="card-header">{{titulo}} </div>
+    <div class="card-body">
+
+        @if(errors.length>0){
+        <div class="alert alert-danger">
+            @for (item of errors; track $index) {
+            {{item.field}} : {{item.messageError}} <br>
+            }
+        </div>
+        }
+
+        <form #clienteForm="ngForm">
+            <div class="form-group row mb-3">
+                <label for="nombre" class="col-form-label col-sm-2">Nombre</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="cliente.nombre" name="nombre" required
+                        minlength="4" #nombre="ngModel" />
+                    @if ((nombre.invalid) && (nombre.dirty || nombre.touched) ) {
+                    <div class="alert alert-danger">
+                        @if( nombre.errors && nombre.errors['required']){
+                        <div>
+                            Nombre es requerido
+                        </div>
+                        }
+                        @if( nombre.errors && nombre.errors['minlength']){
+                        <div>
+                            Nombre debe tener al menos 4 caracteres
+                        </div>
+                        }
+
+
+                    </div>
+                    }
+
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label for="apellido" class="col-form-label col-sm-2">Apellido</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="cliente.apellido" name="apellido" required
+                        #apellido="ngModel" />
+                    @if ((apellido.invalid) && (apellido.dirty || apellido.touched) ) {
+                    <div class="alert alert-danger">
+                        @if( apellido.errors && apellido.errors['required']){
+                        <div>
+                            Apellido es requerido
+                        </div>
+                        }
+
+
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label for="email" class="col-form-label col-sm-2">Email</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" [(ngModel)]="cliente.email" name="email" required email
+                        #email="ngModel" />
+                    @if ((apellido.invalid) && (apellido.dirty || apellido.touched) ) {
+                    <div class="alert alert-danger">
+                        @if( email.errors && email.errors['required']){
+                        <div>
+                            Email es requerido
+                        </div>
+                        }
+                        @if( email.errors && email.errors['email']){
+                        <div>
+                            Email debe tener un formato valido
+                        </div>
+                        }
+
+
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label for="createAt" class="col-form-label col-sm-2">Fecha</label>
+                <div class="col-sm-6">
+                    <input matInput [matDatepicker]="picker" class="form-control" [(ngModel)]="cliente.createAt"
+                        name="createAt" style="display: inline;width: 300px;">
+                    <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </div>
+            </div>
+            <div class="form-group row mb-3">
+                <label for="region" class="col-form-label col-sm-2">Región</label>
+                <div class="col-sm-6">
+                    <select [compareWith]="compararRegion" class="form-control" [(ngModel)]="cliente.region" name="region" style="width: 500px;">
+                        <option [ngValue]="undefined">Seleccione una región</option>
+                        @for (item of regiones$|async; track $index) {
+                        <option [ngValue]="item">{{item.nombre}}</option>
+                        }
+
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="form-group row mb-3">
+                <div class="col-sm-6">
+                    @if (cliente.id) {
+                    <button class="btn btn-primary" role="button" (click)="update()">Actualizar</button>
+                    }
+                    @if(!cliente.id){
+                    <button class="btn btn-primary" role="button" (click)="create()">Crear</button>
+                    }
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+
+
+</div>
