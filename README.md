@@ -1,6 +1,6 @@
 
 ## 🔹 README (Frontend)
-Aquí te muestro cómo quedaría esa parte integrada:  
+Aquí te muestro mi proyecto:  
 
 ```markdown
 # 🧾 Sistema de Gestión de Clientes y Facturación - Frontend
